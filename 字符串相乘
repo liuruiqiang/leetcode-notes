@@ -10,7 +10,8 @@
 输入: num1 = "123", num2 = "456"
 输出: "56088"
 
-
+详解见：https://www.cnblogs.com/grandyang/p/4395356.html
+运用了数字乘法法则的规律
 class Solution {
 public:
     string multiply(string num1, string num2) {
