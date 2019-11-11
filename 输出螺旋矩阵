@@ -1,0 +1,54 @@
+题目：
+给定一个包含 m x n 个元素的矩阵（m 行, n 列），请按照顺时针螺旋顺序，返回矩阵中的所有元素。
+
+示例 1:
+
+输入:
+[
+ [ 1, 2, 3 ],
+ [ 4, 5, 6 ],
+ [ 7, 8, 9 ]
+]
+输出: [1,2,3,6,9,8,7,4,5]
+解法思路：递归的思想，首先是遍历最外层，遍历完后就是对里面的一个矩阵的螺旋遍历，也是同样的遍历方法，所以只需要把左右上下的范围进行更新就好
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        if (matrix.empty() || matrix[0].empty())return {};
+        int m=matrix.size();
+        int n=matrix[0].size();
+        vector<int> res;
+        int left=0,right=n-1,top=0,down=m-1;
+        while(left<=right||top<=down){
+             push(matrix,res,left,right,top,down);
+            left++;right--;top++;down--;
+        }
+        return res;
+       
+        
+    }
+    void push(vector<vector<int>>& matrix,vector<int>& res,int left,int right,int top,int down){
+        if(left>right||top>down){
+            return;
+        }
+        for (int i=left;i<=right;i++){
+            res.push_back(matrix[top][i]);
+        }
+        if(top!=down){
+            for(int i=top+1;i<=down;i++){
+            res.push_back(matrix[i][right]);
+        }
+        }
+        
+        if(left!=right&&top!=down){
+            for(int i=right-1;i>=left;i--){
+            res.push_back(matrix[down][i]);
+        }
+            for(int i=down-1;i>=top+1;i--){
+            res.push_back(matrix[i][left]);
+        }
+        }
+        
+        
+    }
+};
