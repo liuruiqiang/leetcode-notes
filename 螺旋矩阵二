@@ -1,0 +1,38 @@
+
+题目：
+给定一个正整数 n，生成一个包含 1 到 n2 所有元素，且元素按顺时针顺序螺旋排列的正方形矩阵。
+
+示例:
+
+输入: 3
+输出:
+[
+ [ 1, 2, 3 ],
+ [ 8, 9, 4 ],
+ [ 7, 6, 5 ]
+]
+
+思路：和前面的螺旋矩阵思路差不多，这次用一个更简便的方式来做，不用函数，直接分别按照四个方向遍历，然后每个方向遍历完后就更新对应的指针值，以便下次往矩阵里面遍历。
+class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        int num=n*n;
+        int left=0,right=n-1,top=0,down=n-1,n1=1;
+        vector<vector<int>> res(n, vector<int>(n, 0));
+        while(true){
+             for(int i=left;i<=right;i++){
+                  res[top][i]=n1++;
+                    
+             }
+            if(++top>down)break;
+            for(int i=top;i<=down;i++)res[i][right]=n1++;
+            if(--right<left)break;
+            for(int i=right;i>=left;i--)res[down][i]=n1++;
+            if(--down<top)break;
+            for(int i=down;i>=top;i--) res[i][left]=n1++;
+            if(++left>right)break;
+        }
+        return res;
+    }
+    
+};
