@@ -1,0 +1,59 @@
+给定一个链表，旋转链表，将链表每个节点向右移动 k 个位置，其中 k 是非负数。
+
+示例 1:
+
+输入: 1->2->3->4->5->NULL, k = 2
+输出: 4->5->1->2->3->NULL
+解释:
+向右旋转 1 步: 5->1->2->3->4->NULL
+向右旋转 2 步: 4->5->1->2->3->NULL
+
+思路一：利用快慢指针找出新的head
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if(!head) return NULL;
+        int n=0;
+        ListNode* cur=head;
+        while(cur){
+            cur=cur->next;
+            n++;
+        }
+        k%=n;
+        ListNode* slow=head;ListNode* fast=head;
+        for(int i=0;i<k;i++){
+            if(fast)fast=fast->next;
+        }
+        if(!fast)return fast;
+        while(fast->next){
+            slow=slow->next;
+            fast=fast->next;
+        }
+        fast->next=head;
+        fast=slow->next;
+        slow->next=NULL;
+        return fast;
+    }
+};
+思路二：首先直接将指针首尾相连，直接用n-k%n找到新的指针头部
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if(!head) return NULL;
+        int n=1;
+        ListNode* cur=head;
+        while(cur->next){
+            cur=cur->next;
+            n++;
+        }
+        cur->next=head;
+        int c=n-k%n;
+        ListNode* NewNode=head;ListNode* res;
+        for(int i=0;i<c-1;i++){
+            NewNode=NewNode->next;
+        }
+        res=NewNode->next;
+        NewNode->next=NULL;
+        return res;
+    }
+};
