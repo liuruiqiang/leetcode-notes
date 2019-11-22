@@ -1,0 +1,40 @@
+设计一个支持 push，pop，top 操作，并能在常数时间内检索到最小元素的栈。
+
+push(x) -- 将元素 x 推入栈中。
+pop() -- 删除栈顶的元素。
+top() -- 获取栈顶元素。
+getMin() -- 检索栈中的最小元素。
+示例:
+
+MinStack minStack = new MinStack();
+minStack.push(-2);
+minStack.push(0);
+minStack.push(-3);
+minStack.getMin();   --> 返回 -3.
+minStack.pop();
+minStack.top();      --> 返回 0.
+minStack.getMin();   --> 返回 -2.
+
+
+思路：建立两个栈，一个栈存数值，另一个栈保存出现过的最小值，在push阶段，如果x比顶端数值小则同时push到两个栈，否则只push到s1
+class MinStack {
+public:
+    MinStack() {}    
+    void push(int x) {
+        s1.push(x);
+        if (s2.empty() || x <= s2.top()) s2.push(x);
+    }    
+    void pop() {
+        if (s1.top() == s2.top()) s2.pop();
+        s1.pop();
+    }  
+    int top() {
+        return s1.top();
+    }    
+    int getMin() {
+        return s2.top();
+    }
+    
+private:
+    stack<int> s1, s2;
+};
