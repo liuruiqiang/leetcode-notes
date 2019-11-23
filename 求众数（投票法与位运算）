@@ -1,0 +1,49 @@
+给定一个大小为 n 的数组，找到其中的众数。众数是指在数组中出现次数大于 ⌊ n/2 ⌋ 的元素。
+
+你可以假设数组是非空的，并且给定的数组总是存在众数。
+
+示例 1:
+
+输入: [3,2,3]
+输出: 3
+示例 2:
+
+输入: [2,2,1,1,1,2,2]
+输出: 2
+
+思路一：投票法，设第一个数为过半数，设置cnt，遍历后面的数字，和它相等的话cnt+1，否则-1，若减到0了就说明到目前为止这个数出现的次数已经和其他数字出现次数
+持平，需要更换下一个数字作为目标数字，这样最后更新的结果就是那个出现次数过半的数字。
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int count=0;
+        int res=0;
+        for(int num:nums){
+            if(count==0){res=num,count++;}
+            else{
+                num==res?count++:count--;
+            }
+        }
+        return res;
+    }
+};
+思路2：利用位操作，设置32位的数字，每一个位置的数字都需要遍历所有数字在该位置的数值，若该位1出现的次数比0多，则该位置数字设为1，否则设为0，这样就保证32位
+每一位的数字都是与出现次数最多的那个数字在该位置的数字是一样的，最后这个32位数字就是结果；
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int count=0;
+        int res=0;
+        int n=nums.size();
+       for (int i=0;i<32;i++){
+           int ones=0,zeros=0;
+           for(int num:nums){
+               if(ones>(n/2)||zeros>(n/2))break;
+               if((num&(1<<i))!=0)ones++;
+               else{zeros++;}
+           }
+           if(ones>zeros)res|=(1<<i);
+       }
+        return res;
+    }
+};
