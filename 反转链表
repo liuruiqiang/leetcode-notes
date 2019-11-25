@@ -1,0 +1,68 @@
+反转一个单链表。
+
+示例:
+
+输入: 1->2->3->4->5->NULL
+输出: 5->4->3->2->1->NULL
+思路一：常规思路：后插法
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if(!head)return head;
+        ListNode* newtail=head;ListNode* oldhead=head->next;
+        head->next=NULL;
+        while(oldhead){
+            ListNode*temp=oldhead;
+            oldhead=oldhead->next;
+            temp->next=newtail;
+            newtail=temp;
+        }
+        return newtail;
+    }
+};
+思路二：递归法：1、我自己的方法，简单易懂但是耗时比较长，先得到首节点之后的链表的反转链表的首节点，然后一次遍历至最后一个节点，指向head就反转结束，
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+         if(!head||!head->next){
+            return head;
+        }
+        ListNode* front=helper(head->next);
+        ListNode* temp=front;
+        while(temp->next)temp=temp->next;
+        temp->next=head;
+        head->next=NULL;
+        return front;
+    }
+    ListNode* helper(ListNode* head){
+        if(!head->next||!head){
+            return head;
+        }
+        ListNode* front=helper(head->next);
+        ListNode* temp=front;
+        while(temp->next)temp=temp->next;
+        temp->next=head;
+        head->next=NULL;
+        return front;
+    }
+};
+2、大佬思路：跟我差不多，但是没有再遍历到最后一个节点的操作，耗时比较短，不用遍历是因为在反转后，比如1-2-3-4-5反转后变为5-4-3-2-1，这个时候每个节点在递归
+当做Head时都是直接把head->next->next指向head,比如这里3-4-5,3->next是4，反转后将4->next指向3，即直接3->next->next=3
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if (!head || !head->next) return head;
+        ListNode *newHead = reverseList(head->next);
+        head->next->next = head;
+        head->next = NULL;
+        return newHead;
+    }
+};
