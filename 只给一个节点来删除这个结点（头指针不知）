@@ -1,0 +1,11 @@
+思路：只给链表中的随便一个节点不给头指针，这个时候无法像平常一样来删除，需要找到下一个节点然后把下一个节点的值赋给目标节点然后删除下一个节点就好了
+class Solution {
+public:
+    void deleteNode(ListNode* node) {
+        
+        ListNode* neone=node->next;
+        int val=neone->val;
+        node->val=val;
+        node->next=neone->next;
+    }
+};
