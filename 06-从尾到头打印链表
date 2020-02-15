@@ -1,0 +1,30 @@
+题目描述
+输入一个链表的头节点，从尾到头反过来返回每个节点的值（用数组返回）。
+解法
+用一个栈从头到尾遍历链表，依次压入栈中，然后利用栈的先进后出的特点，依次弹出放入res数组中
+时间复杂度：O(n),空间复杂度：O(n)
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> reversePrint(ListNode* head) {
+        vector<int> res;
+        stack<int> nodes;
+        ListNode* node=head;
+        while(node!=NULL){
+            nodes.push(node->val);
+            node=node->next;
+        }
+        while(!nodes.empty()){
+            res.push_back(nodes.top());
+            nodes.pop();
+        }
+        return res;
+    }
+};
