@@ -1,0 +1,47 @@
+## 面试题07-重建二叉树
+### 题目描述
+>输入某二叉树的前序遍历和中序遍历的结果，请重建出该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。例如输入前序遍历序列{1,2,4,7,3,5,6,8}和中序遍历序列{4,7,2,1,5,3,8,6}，则重建二叉树并返回。
+### 思路
+采用递归的思想，首先在前序队列中找到第一个也就是根节点，然后在中序队列中找到这一节点，这个时候该节点前面的节点就都是根节点的左子树节点，后面的节点就都是右子树，这个时候就分别对左子树和右子树递归依次找到根节点，首先要将前序队列和中序队列中的左子树节点和右子树节点分别找到并加入数组中，再对这些数组按照同样的方式进行递归归到当前根节点下，最后就能重建二叉树。
+> 代码
+
+```c++
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* reConstructBinaryTree(vector<int> pre,vector<int> vin) {
+        int len=pre.size();
+        if(len==0){
+            return NULL;
+        }
+        TreeNode* Head=new TreeNode(pre[0]);
+       
+        int subHead=0;
+        vector<int> left_pre,left_vin,right_pre,right_vin;
+        for(int i=0;i<len;i++){
+            if(pre[0]==vin[i]){
+                subHead=i;
+                break;
+            }
+        }
+        for(int i=0;i<subHead;i++){
+            left_pre.push_back(pre[i+1]);
+            left_vin.push_back(vin[i]);
+        }
+        for(int i=subHead+1;i<len;i++){
+            right_pre.push_back(pre[i]);
+            right_vin.push_back(vin[i]);
+        }
+        Head->left=reConstructBinaryTree(left_pre,left_vin);
+        Head->right=reConstructBinaryTree(right_pre,right_vin);
+        return Head;
+    }
+};
